@@ -1,0 +1,27 @@
+{
+  "mcpServers": {
+    "hal-documents": {
+      "command": "uv",
+      "args": [
+        "run",
+        "--directory",
+        "C:\\path\\to\\hal-9001",
+        "hal-documents",
+        "--root",
+        "C:\\path\\to\\your\\documents"
+      ]
+    },
+    "hal-memory": {
+      "command": "uv",
+      "args": [
+        "run",
+        "--directory",
+        "C:\\path\\to\\hal-9001",
+        "hal-memory"
+      ],
+      "env": {
+        "HAL_MEMORY_CONNECTION_STRING": "Server=localhost;Database=<database>;UID=<login>;PWD=<password>;Encrypt=yes;TrustServerCertificate=yes"
+      }
+    }
+  }
+}
