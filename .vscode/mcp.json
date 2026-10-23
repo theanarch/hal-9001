@@ -1,0 +1,17 @@
+{
+  "inputs": [
+    {
+      "type": "promptString",
+      "id": "docs-root",
+      "description": "Folder with documents for hal-documents (absolute, or relative to the repository)",
+      "default": "sample-docs"
+    }
+  ],
+  "servers": {
+    "hal-documents": {
+      "type": "stdio",
+      "command": "uv",
+      "args": ["run", "--directory", "${workspaceFolder}", "hal-documents", "--root", "${input:docs-root}"]
+    }
+  }
+}

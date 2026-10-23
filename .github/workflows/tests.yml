@@ -1,0 +1,44 @@
+name: tests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+        python: ["3.11", "3.13"]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+        with:
+          python-version: ${{ matrix.python }}
+      - run: uv sync
+      - run: uv run pytest -v
+
+  memory-sql-server:
+    # Runs the hal-memory tests, including sql/setup.sql and the guardrail tests, against a real SQL Server 2022.
+    runs-on: ubuntu-latest
+    services:
+      mssql:
+        image: mcr.microsoft.com/mssql/server:2022-latest
+        env:
+          ACCEPT_EULA: "Y"
+          MSSQL_SA_PASSWORD: "Ci_Str0ng!Passw0rd"
+        ports:
+          - 1433:1433
+    env:
+      HAL_MEMORY_TEST_SERVER: localhost,1433
+      HAL_MEMORY_TEST_SA_PASSWORD: "Ci_Str0ng!Passw0rd"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+        with:
+          python-version: "3.13"
+      - run: uv sync
+      - run: uv run pytest -v tests/test_memory.py
